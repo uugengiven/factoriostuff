@@ -66,6 +66,20 @@
 
         const upgrade = (index) => {
             //loop through all grid items and upgrade given index
+            for (const [key, value] of Object.entries(gridItems)) {
+                if(value.index === index)
+                {
+                    const box = document.getElementById(key);
+                    if(box.style.backgroundColor === "grey")
+                    {
+                        box.style.backgroundColor = "blue";
+                    }
+                    else if(box.style.backgroundColor === "blue")
+                    {
+                        box.style.backgroundColor = "orange";
+                    }
+                }
+            }
             console.log("upgrade",index)
         }
 
@@ -83,7 +97,7 @@
                 // if it is an assembler, you need to get all of the boxes starting at id using x/y
                 if (item === "belt")
                 {
-                    box.style.backgroundColor = "red";
+                    box.style.backgroundColor = "yellow";
                     gridItems[id] = {item, index}
                     index = index + 1
                 }
@@ -106,15 +120,15 @@
                 gridItems[(y - 1) + "-" + (x - 1)] = {item, index};
                 gridItems[(y) + "-" + (x)] = {item, index};
                 index = index + 1;
-                e.style.backgroundColor = "red";
-                w.style.backgroundColor = "red";
-                s.style.backgroundColor = "red";
-                n.style.backgroundColor = "red";
-                ne.style.backgroundColor = "red";
-                sw.style.backgroundColor = "red";
-                se.style.backgroundColor = "red";
-                nw.style.backgroundColor = "red";
-                box.style.backgroundColor = "red";}
+                e.style.backgroundColor = "grey";
+                w.style.backgroundColor = "grey";
+                s.style.backgroundColor = "grey";
+                n.style.backgroundColor = "grey";
+                ne.style.backgroundColor = "grey";
+                sw.style.backgroundColor = "grey";
+                se.style.backgroundColor = "grey";
+                nw.style.backgroundColor = "grey";
+                box.style.backgroundColor = "grey";}
             }
             else if(e.button === 1)
             {
@@ -129,18 +143,18 @@
                     {
                         return
                     }
+                    else if (box.style.backgroundColor === "yellow")
+                    {
+                        box.style.backgroundColor = "red"
+                    }
                     else if (box.style.backgroundColor === "red")
                     {
-                        box.style.backgroundColor = "blue"
-                    }
-                    else if (box.style.backgroundColor === "blue")
-                    {
-                        box.style.backgroundColor = "purple"
+                        box.style.backgroundColor = "aqua"
                     }
                 }
-                else if (item === "assemb")
+                else if (gridItems[id].item === "assemb")
                 {
-
+                    upgrade(gridItems[id].index);
                 }
             }
         }
