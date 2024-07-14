@@ -41,7 +41,7 @@
                 newGrid += `<div class="row">`
                 for(let x = 0; x < size; x++)
                 {
-                    newGrid += `<div class="factoryCell" id="${y}-${x}" onclick="clickBox(id)"></div>`
+                    newGrid += `<div class="factoryCell" id="${y}-${x}" onmousedown="clickBox(id, event)" oncontextmenu="RclickBox(id, event)"></div>`
                 }
                 newGrid += `</div>`
             }
@@ -49,9 +49,40 @@
             plan.innerHTML = newGrid;
         }
 
-        const clickBox = (id) => {
+        const clickBox = (id, e) => {
+            console.log(e);
             const box = document.getElementById(id);
-            box.style.backgroundColor = "red";
+            // if button is 0, left click
+            // if button is 1, middle click
+            // if button is 2, right click
+            if(e.button === 0)
+            {
+                box.style.backgroundColor = "red"
+            }
+            else if(e.button === 1)
+            {
+                box.style.backgroundColor = "black"
+                
+            }
+            else if(e.button === 2)
+            {
+                if (box.style.backgroundColor === "black")
+                {return}
+                else if (box.style.backgroundColor === "red")
+                {box.style.backgroundColor = "blue"}
+                else if (box.style.backgroundColor === "blue")
+                {box.style.backgroundColor = "purple"}
+            }
+        }
+        const RclickBox = (id, e) => {
+            console.log("RclickBox");
+            e.preventDefault();
+            // const box = document.getElementById(id);
+            // if(box.style.backgroundColor==="blue")
+            // {box.style.backgroundColor = "black"}
+            // else
+            // {box.style.backgroundColor = "blue";}
+            return false;
         }
     </script>
 </head>
