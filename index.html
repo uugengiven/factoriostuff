@@ -33,6 +33,7 @@
     </style>
     <script>
         let gridItems = {};
+        let index = 1;
 
         const init = () => {
             const plan = document.getElementById("plan");
@@ -63,23 +64,57 @@
             return [x, y];
         }
 
+        const upgrade = (index) => {
+            //loop through all grid items and upgrade given index
+            console.log("upgrade",index)
+        }
+
         const clickBox = (id, e) => {
             console.log(e);
             const box = document.getElementById(id); // 3-5
             const item = document.getElementById("item").value;
             const [x, y] = getXY(id);
-            gridItems[id] = item; // wrong place!
+            //gridItems[id] = item; // wrong place!
             // if button is 0, left click
             // if button is 1, middle click
             // if button is 2, right click
             if(e.button === 0)
             {
                 // if it is an assembler, you need to get all of the boxes starting at id using x/y
-                const right = document.getElementById(`${y}-${x+1}`);
-                const left = document.getElementById(y + "-" + (x - 1));
-                right.style.backgroundColor = "red";
-                left.style.backgroundColor = "red";
-                box.style.backgroundColor = "red";
+                if (item === "belt")
+                {
+                    box.style.backgroundColor = "red";
+                    gridItems[id] = {item, index}
+                    index = index + 1
+                }
+                else if (item === "assemb")
+                {const e = document.getElementById(`${y}-${x+1}`);
+                gridItems[`${y}-${x+1}`] = {item, index};
+                const w = document.getElementById(y + "-" + (x - 1));
+                gridItems[y + "-" + (x - 1)] = {item, index};
+                const s = document.getElementById(`${y+1}-${x}`);
+                gridItems[`${y+1}-${x}`] = {item, index};
+                const n = document.getElementById((y - 1) + "-" + (x));
+                gridItems[(y - 1) + "-" + (x)] = {item, index};
+                const ne = document.getElementById(`${y-1}-${x+1}`);
+                gridItems[`${y-1}-${x+1}`] = {item, index};
+                const sw = document.getElementById((y + 1) + "-" + (x - 1));
+                gridItems[(y + 1) + "-" + (x - 1)] = {item, index};
+                const se = document.getElementById(`${y+1}-${x+1}`);
+                gridItems[`${y+1}-${x+1}`] = {item, index};
+                const nw = document.getElementById((y - 1) + "-" + (x - 1));
+                gridItems[(y - 1) + "-" + (x - 1)] = {item, index};
+                gridItems[(y) + "-" + (x)] = {item, index};
+                index = index + 1;
+                e.style.backgroundColor = "red";
+                w.style.backgroundColor = "red";
+                s.style.backgroundColor = "red";
+                n.style.backgroundColor = "red";
+                ne.style.backgroundColor = "red";
+                sw.style.backgroundColor = "red";
+                se.style.backgroundColor = "red";
+                nw.style.backgroundColor = "red";
+                box.style.backgroundColor = "red";}
             }
             else if(e.button === 1)
             {
@@ -88,12 +123,25 @@
             }
             else if(e.button === 2)
             {
-                if (box.style.backgroundColor === "black")
-                {return}
-                else if (box.style.backgroundColor === "red")
-                {box.style.backgroundColor = "blue"}
-                else if (box.style.backgroundColor === "blue")
-                {box.style.backgroundColor = "purple"}
+                if (gridItems[id].item === "belt")
+                {
+                    if (box.style.backgroundColor === "black")
+                    {
+                        return
+                    }
+                    else if (box.style.backgroundColor === "red")
+                    {
+                        box.style.backgroundColor = "blue"
+                    }
+                    else if (box.style.backgroundColor === "blue")
+                    {
+                        box.style.backgroundColor = "purple"
+                    }
+                }
+                else if (item === "assemb")
+                {
+
+                }
             }
         }
 
