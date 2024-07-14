@@ -32,6 +32,8 @@
         }
     </style>
     <script>
+        let gridItems = {};
+
         const init = () => {
             const plan = document.getElementById("plan");
             const size = Number(document.getElementById("size").value);
@@ -47,17 +49,37 @@
             }
 
             plan.innerHTML = newGrid;
+            gridItems = {};
+        }
+
+        const getXY = (id) => {
+            // id looks like 5-12
+            // left is y
+            // right one is x
+            const xyStrings = id.split("-");
+            const y = Number(xyStrings[0]);
+            const x = Number(xyStrings[1]);
+
+            return [x, y];
         }
 
         const clickBox = (id, e) => {
             console.log(e);
-            const box = document.getElementById(id);
+            const box = document.getElementById(id); // 3-5
+            const item = document.getElementById("item").value;
+            const [x, y] = getXY(id);
+            gridItems[id] = item; // wrong place!
             // if button is 0, left click
             // if button is 1, middle click
             // if button is 2, right click
             if(e.button === 0)
             {
-                box.style.backgroundColor = "red"
+                // if it is an assembler, you need to get all of the boxes starting at id using x/y
+                const right = document.getElementById(`${y}-${x+1}`);
+                const left = document.getElementById(y + "-" + (x - 1));
+                right.style.backgroundColor = "red";
+                left.style.backgroundColor = "red";
+                box.style.backgroundColor = "red";
             }
             else if(e.button === 1)
             {
@@ -74,6 +96,8 @@
                 {box.style.backgroundColor = "purple"}
             }
         }
+
+
         const RclickBox = (id, e) => {
             console.log("RclickBox");
             e.preventDefault();
@@ -90,6 +114,10 @@
     <h1>Factorio Blueprint Thing</h1>
     <input type="number" value="10" id="size" />
     <button onclick="init()">Make Grid</button>
+    <select id="item">
+         <option value="assemb">Assembler</option>
+         <option value="belt">Belt</option>
+    </select>
     <div id="plan">
     </div>
 </body>
